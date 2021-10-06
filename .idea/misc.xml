@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/activity_main.xml" value="0.3671875" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/activity_splash_screen.xml" value="0.3671875" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/content_main.xml" value="0.39785553047404065" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/fragment_gallery.xml" value="0.3671875" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/menu/activity_main_drawer.xml" value="0.3671875" />
       </map>
     </option>

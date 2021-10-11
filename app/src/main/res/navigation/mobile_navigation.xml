@@ -22,4 +22,18 @@
         android:name="com.manytiles.p8.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_selectimg"
+        android:name="com.manytiles.p8.ui.SelectImgFragment"
+        android:label="@string/selectImg"
+        tools:layout="@layout/fragment_slideshow" >
+        <action
+            android:id="@+id/action_nav_selectimg_to_nav_SeleccionarDificultad"
+            app:destination="@id/nav_SeleccionarDificultad" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_SeleccionarDificultad"
+        android:name="com.manytiles.p8.ui.SeleccionarDificultadFragment"
+        android:label="@string/SeleccionarDificultad"
+        tools:layout="@layout/fragment_seleccionar_dificultad" />
 </navigation>

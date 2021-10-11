@@ -5,9 +5,15 @@
       <map>
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/activity_main.xml" value="0.3671875" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/activity_splash_screen.xml" value="0.3671875" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/app_bar_main.xml" value="0.27898550724637683" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/content_main.xml" value="0.39785553047404065" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/fragment_gallery.xml" value="0.3671875" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/fragment_home.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/fragment_seleccionar_dificultad.xml" value="0.240625" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/fragment_slideshow.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/layout/select_img.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/menu/activity_main_drawer.xml" value="0.3671875" />
+        <entry key="..\:/Users/pozue/AndroidStudioProjects/P8/app/src/main/res/menu/main.xml" value="0.35520833333333335" />
       </map>
     </option>
   </component>

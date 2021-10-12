@@ -1,22 +1,26 @@
 package com.manytiles.p8;
 
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.manytiles.p8.databinding.ActivityMainBinding;
+
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,10 +71,27 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-// metodo para seleccionar la imagen almacenada en el dispositivo
-    private Bitmap selectImage(){
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.coffe);
+
+    // metodo para seleccionar la imagen almacenada en el dispositivo
+    private Bitmap selectImage() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.coffe);
 
         return bitmap;
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        System.out.println(newConfig);
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public void changeLanguageToSpanish(MenuItem item) {
+        System.out.println(item);
+        Locale locale = new Locale("es", "ES");
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        System.out.println("Changed language: " + getResources().getConfiguration().locale);
     }
 }

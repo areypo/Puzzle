@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">P8</string>
+    <string name="language_es">Castellano</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="menu_gallery">Galería</string>
+    <string name="menu_home">Inicio</string>
+    <string name="SeleccionarDificultad">Seleccionar Nivel</string>
+</resources>

@@ -27,6 +27,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 
+import com.manytiles.p8.MainActivityViewModel;
 import com.manytiles.p8.R;
 import com.manytiles.p8.databinding.FragmentHomeBinding;
 import com.manytiles.p8.databinding.SelectImgBinding;
@@ -42,14 +43,16 @@ public class SelectImgFragment extends Fragment {
     private ImageView imageSelected;
 
     private SelectImgBinding binding;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = SelectImgBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        MainActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == Activity.RESULT_OK){
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     //se coge la uri a la foto seleccionada
                     Uri photoUri = result.getData().getData();
                     try {
@@ -57,6 +60,7 @@ public class SelectImgFragment extends Fragment {
                         //ese bitmap (que es propiamente una imagen, ya se puede trocear en piezas o procesarlo como imagen)
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), photoUri);
                         binding.fotoSeleccionadaImageView.setImageBitmap(bitmap);
+                        viewModel.getPuzzleModel().setImagen(bitmap);
                         NavController controller = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
                         controller.navigate(R.id.action_nav_selectimg_to_nav_SeleccionarDificultad);
                     } catch (IOException e) {
@@ -115,18 +119,18 @@ public class SelectImgFragment extends Fragment {
 
     */
 
-    public void selectImg(){
+    public void selectImg() {
 
-        try{
+        try {
             /*Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);*/
             Intent intent = new Intent();
             intent.setType("image/");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Complete Action Using "),REQUEST_CODE_SELECT_IMAGE);
+            startActivityForResult(Intent.createChooser(intent, "Complete Action Using "), REQUEST_CODE_SELECT_IMAGE);
             /*if(intent.resolveActivity(getPackageManager()) != null){
                 startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
             }*/
-        }catch(Exception exception){
+        } catch (Exception exception) {
             Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
@@ -136,10 +140,10 @@ public class SelectImgFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectImg();
-            }else{
+            } else {
                 Toast.makeText(getContext(), "Permission denied", Toast.LENGTH_SHORT).show();
             }
         }

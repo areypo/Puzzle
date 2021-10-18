@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.manytiles.p8.MainActivityViewModel;
 import com.manytiles.p8.Pieza;
+import com.manytiles.p8.R;
 import com.manytiles.p8.databinding.FragmentSeleccionarDificultadBinding;
 
 import java.util.ArrayList;
@@ -43,15 +46,22 @@ public class SeleccionarDificultadFragment extends Fragment {
             viewModel.getPuzzleModel().setDificultad(DIFICULTAD_FACIL);
             List<Pieza> piezas = generarPiezas();
             viewModel.getPuzzleModel().setPiezas(piezas);
+            navegarAPuzzleFragment();
 
         });
         binding.buttonDificil.setOnClickListener(view -> {
             viewModel.getPuzzleModel().setDificultad(DIFICULTAD_DIFICIL);
             List<Pieza> piezas = generarPiezas();
             viewModel.getPuzzleModel().setPiezas(piezas);
+            navegarAPuzzleFragment();
         });
 
         return root;
+    }
+
+    private void navegarAPuzzleFragment(){
+        NavController navigation = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+        navigation.navigate(R.id.action_nav_SeleccionarDificultad_to_puzzleFragment);
     }
 
     private List<Pieza> generarPiezas(){

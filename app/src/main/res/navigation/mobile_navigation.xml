@@ -35,5 +35,14 @@
         android:id="@+id/nav_SeleccionarDificultad"
         android:name="com.manytiles.p8.ui.SeleccionarDificultadFragment"
         android:label="@string/SeleccionarDificultad"
-        tools:layout="@layout/fragment_seleccionar_dificultad" />
+        tools:layout="@layout/fragment_seleccionar_dificultad" >
+        <action
+            android:id="@+id/action_nav_SeleccionarDificultad_to_puzzleFragment"
+            app:destination="@id/puzzleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/puzzleFragment"
+        android:name="com.manytiles.p8.ui.PuzzleFragment"
+        android:label="fragment_puzzle"
+        tools:layout="@layout/fragment_puzzle" />
 </navigation>

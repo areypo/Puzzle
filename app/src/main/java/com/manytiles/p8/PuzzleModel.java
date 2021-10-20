@@ -14,6 +14,8 @@ public class PuzzleModel {
 
     private List<Pieza> piezas;
 
+    private List<Pieza> piezasDesordenadas;
+
     private Long inicioJuego;
 
     private Long finJuego;
@@ -56,5 +58,13 @@ public class PuzzleModel {
 
     public void setFinJuego(Long finJuego) {
         this.finJuego = finJuego;
+    }
+
+    public List<Pieza> getPiezasDesordenadas() {
+        return piezasDesordenadas;
+    }
+
+    public void setPiezasDesordenadas(List<Pieza> piezasDesordenadas) {
+        this.piezasDesordenadas = piezasDesordenadas;
     }
 }

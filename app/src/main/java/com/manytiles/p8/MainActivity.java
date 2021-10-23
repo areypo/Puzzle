@@ -2,27 +2,32 @@ package com.manytiles.p8;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.manytiles.p8.databinding.ActivityMainBinding;
+import com.manytiles.p8.scoreManager.ScoreManager;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap image = this.selectImage();
 
+        // Use Example of Score Database API
+//        ScoreManager.purgeScore(this);
+        ScoreManager.addScore(this, 60);
+        ScoreManager.addScore(this, 120);
+        ScoreManager.addScore(this, 80);
+
+        ScoreManager.printScore(this);
+
+        System.out.println("Update ID 1: " + ScoreManager.updateScore(this, 1, new Date(1634990411516L), 69));
+        System.out.println("ID 1: " + ScoreManager.getScore(this, 1));
+
+        ScoreManager.removeScore(this, 1);
+        ScoreManager.printScore(this);
     }
 
     @Override
@@ -67,9 +85,10 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
-// metodo para seleccionar la imagen almacenada en el dispositivo
-    private Bitmap selectImage(){
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.coffe);
+
+    // metodo para seleccionar la imagen almacenada en el dispositivo
+    private Bitmap selectImage() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.coffe);
 
         return bitmap;
     }

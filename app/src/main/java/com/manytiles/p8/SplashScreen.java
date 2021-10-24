@@ -1,10 +1,10 @@
 package com.manytiles.p8;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class SplashScreen extends AppCompatActivity {
@@ -15,10 +15,9 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
 
         //  Splash
-
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashScreen.this,MainActivity.class);
+            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
             startActivity(intent);
-        },4000);
+        }, 4000);
     }
 }

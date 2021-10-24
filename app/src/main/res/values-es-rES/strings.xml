@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PuzzleDroid</string>
+    <string name="play">Jugar</string>
+    <string name="logo_description">Logo</string>
+    <string name="help">Ayuda</string>
+    <string name="splash_img_description">Imagen Splash con el logo</string>
+    <string name="back">Atrás</string>
+</resources>

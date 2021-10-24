@@ -1,20 +1,26 @@
 package com.manytiles.p8.ui;
 
-import android.graphics.Bitmap;
+import static com.manytiles.p8.PuzzleModel.DIFICULTAD_DIFICIL;
+
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.manytiles.p8.MainActivityViewModel;
 import com.manytiles.p8.Pieza;
@@ -24,7 +30,6 @@ import com.manytiles.p8.R;
 import com.manytiles.p8.databinding.FragmentPuzzleBinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -69,22 +74,52 @@ public class PuzzleFragment extends Fragment {
 
         binding.puzzleGridView.setAdapter(adaptador);
 
+        binding.buttonComplete.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPuzzleAndContinue(puzzleController);
+            }
+        }));
+
         List<Integer> piezasAIntercambiar = new ArrayList<>();
         binding.puzzleGridView.setOnItemClickListener((parent, view, position, id) -> {
-            view.findViewById(R.id.celda_puzzle_imagen).setBackgroundColor(Color.GREEN);
+            view.findViewById(R.id.celda_puzzle_imagen).setBackgroundColor(Color.MAGENTA);
             piezasAIntercambiar.add(position);
             if(piezasAIntercambiar.size() == 2){
                 //intercambiar piezas
                 puzzleController.intercambiarPiezas(piezasAIntercambiar.get(0), piezasAIntercambiar.get(1));
-                boolean resultado = puzzleController.comprobarPuzzleResuelto();
-                if(resultado){
-                    long puntuacion = puzzleController.finalizarJuego();
-                }
                 adaptador.notifyDataSetChanged();
                 piezasAIntercambiar.clear();
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void checkPuzzleAndContinue(PuzzleController puzzle){
+        boolean resultado = puzzle.comprobarPuzzleResuelto();
+        if(resultado){
+            long puntuacion = puzzle.finalizarJuego();
+            final Dialog fbDialogue = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar);
+            fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
+            fbDialogue.setContentView(R.layout.fragment_congrats_dialogue);
+            fbDialogue.setCancelable(true);
+            fbDialogue.show();
+            TextView text2 = (TextView) fbDialogue.findViewById(R.id.score);
+            String score2 = String.valueOf(Math.abs(puntuacion));
+            text2.setText(score2);
+            Button button1 = (Button) fbDialogue.findViewById(R.id.buttonToHome);
+            Button button2 = (Button) fbDialogue.findViewById(R.id.buttonToSelectImg);
+            button1.setOnClickListener(view -> {
+                fbDialogue.hide();
+                NavController navigation = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                navigation.navigate(R.id.nav_home);
+            });
+            button2.setOnClickListener(view -> {
+                fbDialogue.hide();
+                NavController navigation = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
+                navigation.navigate(R.id.nav_selectimg);
+            });
+        }
     }
 }

@@ -14,4 +14,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="SeleccionarDificultad">Seleccione Dificultad</string>
+    <string name="clickPieces">Seleccione una pieza para cambiarla de posición</string>
+    <string name="congrats">¡Felicidades!</string>
+    <string name="puzzle_completed">Tu puntuación es de:</string>
+    <string name="new_puzzle">Otra vez</string>
 </resources>

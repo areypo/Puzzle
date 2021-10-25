@@ -18,7 +18,7 @@ public class PuzzleController {
     }
 
     public long finalizarJuego(){
-        return this.puzzleModel.getInicioJuego() - System.currentTimeMillis();
+        return System.currentTimeMillis() - this.puzzleModel.getInicioJuego();
     }
 
     public void barajarPiezas(){

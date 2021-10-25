@@ -6,12 +6,20 @@ import java.util.Date;
 public class Score {
     private int id;
     private Date date;
-    private int score;
+    private long score;
+    private int dificultad;
 
-    public Score(int id, Date date, int score) {
+    public Score(int id, Date date, long score) {
         this.id = id;
         this.date = date;
         this.score = score;
+    }
+
+    public Score(int id, Date date, long score, int dificultad) {
+        this.id = id;
+        this.date = date;
+        this.score = score;
+        this.dificultad = dificultad;
     }
 
     public int getId() {
@@ -30,7 +38,7 @@ public class Score {
         this.date = date;
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
@@ -45,5 +53,13 @@ public class Score {
                 ", date=" + date +
                 ", score=" + score +
                 '}';
+    }
+
+    public int getDificultad() {
+        return dificultad;
+    }
+
+    public void setDificultad(int dificultad) {
+        this.dificultad = dificultad;
     }
 }

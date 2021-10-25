@@ -28,6 +28,7 @@ import com.manytiles.p8.PuzzleController;
 import com.manytiles.p8.PuzzleModel;
 import com.manytiles.p8.R;
 import com.manytiles.p8.databinding.FragmentPuzzleBinding;
+import com.manytiles.p8.scoreManager.ScoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,6 @@ public class PuzzleFragment extends Fragment {
                 //intercambiar piezas
                 puzzleController.intercambiarPiezas(piezasAIntercambiar.get(0), piezasAIntercambiar.get(1));
                 this.checkPuzzleAndContinue();
-                checkPuzzleAndContinue();
                 adaptador.notifyDataSetChanged();
                 piezasAIntercambiar.clear();
             }
@@ -103,6 +103,11 @@ public class PuzzleFragment extends Fragment {
         boolean resultado = puzzleController.comprobarPuzzleResuelto();
         if(resultado){
             long puntuacion = puzzleController.finalizarJuego();
+            int dificultad = this.viewModel.getPuzzleModel().getDificultad();
+
+            ScoreManager scoreManager = new ScoreManager(requireContext());
+            scoreManager.addScore(puntuacion, dificultad);
+
             final Dialog fbDialogue = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar);
             fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
             fbDialogue.setContentView(R.layout.fragment_congrats_dialogue);

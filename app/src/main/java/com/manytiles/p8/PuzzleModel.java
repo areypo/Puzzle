@@ -18,8 +18,6 @@ public class PuzzleModel {
 
     private Long inicioJuego;
 
-    private Long finJuego;
-
     public Bitmap getImagen() {
         return imagen;
     }
@@ -50,14 +48,6 @@ public class PuzzleModel {
 
     public void setInicioJuego(Long inicioJuego) {
         this.inicioJuego = inicioJuego;
-    }
-
-    public Long getFinJuego() {
-        return finJuego;
-    }
-
-    public void setFinJuego(Long finJuego) {
-        this.finJuego = finJuego;
     }
 
     public List<Pieza> getPiezasDesordenadas() {

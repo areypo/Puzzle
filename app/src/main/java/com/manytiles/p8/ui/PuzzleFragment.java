@@ -37,6 +37,7 @@ public class PuzzleFragment extends Fragment {
 
     private FragmentPuzzleBinding binding;
     private MainActivityViewModel viewModel;
+    private PuzzleController puzzleController;
 
     public PuzzleFragment() {
         // Required empty public constructor
@@ -47,7 +48,7 @@ public class PuzzleFragment extends Fragment {
         binding = FragmentPuzzleBinding.inflate(inflater, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
 
-        PuzzleController puzzleController = new PuzzleController(viewModel.getPuzzleModel());
+        puzzleController = new PuzzleController(viewModel.getPuzzleModel());
         puzzleController.barajarPiezas();
         puzzleController.iniciarPuzzle();
 
@@ -74,12 +75,12 @@ public class PuzzleFragment extends Fragment {
 
         binding.puzzleGridView.setAdapter(adaptador);
 
-        binding.buttonComplete.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkPuzzleAndContinue(puzzleController);
-            }
-        }));
+//        binding.buttonComplete.setOnClickListener((new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                checkPuzzleAndContinue(puzzleController);
+//            }
+//        }));
 
         List<Integer> piezasAIntercambiar = new ArrayList<>();
         binding.puzzleGridView.setOnItemClickListener((parent, view, position, id) -> {
@@ -88,6 +89,8 @@ public class PuzzleFragment extends Fragment {
             if(piezasAIntercambiar.size() == 2){
                 //intercambiar piezas
                 puzzleController.intercambiarPiezas(piezasAIntercambiar.get(0), piezasAIntercambiar.get(1));
+                this.checkPuzzleAndContinue();
+                checkPuzzleAndContinue();
                 adaptador.notifyDataSetChanged();
                 piezasAIntercambiar.clear();
             }
@@ -96,10 +99,10 @@ public class PuzzleFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void checkPuzzleAndContinue(PuzzleController puzzle){
-        boolean resultado = puzzle.comprobarPuzzleResuelto();
+    private void checkPuzzleAndContinue(){
+        boolean resultado = puzzleController.comprobarPuzzleResuelto();
         if(resultado){
-            long puntuacion = puzzle.finalizarJuego();
+            long puntuacion = puzzleController.finalizarJuego();
             final Dialog fbDialogue = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar);
             fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(100, 0, 0, 0)));
             fbDialogue.setContentView(R.layout.fragment_congrats_dialogue);

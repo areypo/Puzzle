@@ -18,4 +18,5 @@
     <string name="congrats">¡Felicidades!</string>
     <string name="puzzle_completed">Tu puntuación es de:</string>
     <string name="new_puzzle">Otra vez</string>
+    <string name="menu_ayuda">Ayuda</string>
 </resources>

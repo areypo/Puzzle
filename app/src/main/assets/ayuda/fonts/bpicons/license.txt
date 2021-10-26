@@ -1,0 +1,16 @@
+#-------------------------------------------------------------------------------
+# Copyright (c) 2014 Antonio Isaac Roldán Peña.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the GNU Public License v3.0
+# which accompanies this distribution, and is available at
+# http://www.gnu.org/licenses/gpl.html
+# 
+# Contributors:
+#     Antonio Isaac Roldán Peña - initial API and implementation
+#-------------------------------------------------------------------------------
+Icon Set:	Font Awesome -- http://fortawesome.github.com/Font-Awesome/
+License:	SIL -- http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL
+
+
+Icon Set:	Eco Ico -- http://dribbble.com/shots/665585-Eco-Ico
+License:	CC0 -- http://creativecommons.org/publicdomain/zero/1.0/

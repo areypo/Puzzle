@@ -3,6 +3,7 @@
     package="com.manytiles.p8">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.P8.NoActionBar">
-
         <activity
             android:name=".SplashScreen"
             android:exported="true">
@@ -21,15 +21,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.P8" />
-
         <activity
             android:name=".HelpActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.P8" />
+        <activity
+            android:name=".ui.SelectImgActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.P8" />
+        <activity
+            android:name=".ui.SelectLevelActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.P8" />

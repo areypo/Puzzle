@@ -53,7 +53,7 @@ public class Score {
     }
 
     public String getStringScore() {
-        return score + "s";
+        return score + "ms";
     }
 
     public int getLevel() {

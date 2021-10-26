@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class ScoreAPI {
@@ -17,8 +16,8 @@ public class ScoreAPI {
     private final static String TABLE_NAME = "scores";
     private final static String ID_COL = "id";
     private final static String DATE_COL = "date";
-    private final static String PUNTUACION_COL = "score";
-    private final static String DIFICULTAD_COL = "level";
+    private final static String SCORE_COL = "score";
+    private final static String LEVEL_COL = "level";
 
     private AdminSQLiteOpenHelper adminSQLiteOpenHelper;
 
@@ -38,8 +37,8 @@ public class ScoreAPI {
             ContentValues contentValues = new ContentValues();
             Date now = new Date();
             contentValues.put(DATE_COL, databaseDateFormat.format(now));
-            contentValues.put(PUNTUACION_COL, score);
-            contentValues.put(DIFICULTAD_COL, level);
+            contentValues.put(SCORE_COL, score);
+            contentValues.put(LEVEL_COL, level);
             long id = database.insert("scores", null, contentValues);
             database.close();
 
@@ -58,8 +57,8 @@ public class ScoreAPI {
                 try {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
                     Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
-                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
-                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(SCORE_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(LEVEL_COL));
                     scores.add(new Score(id, date, score, level));
                 } catch (IllegalArgumentException | ParseException ignored) {
                 }
@@ -71,7 +70,7 @@ public class ScoreAPI {
         return scores;
     }
 
-    public List<Score> getBetterScores(int levelReq, int size) {
+    public ArrayList<Score> getBetterScores(int levelReq, int size) {
         SQLiteDatabase database = getSqLiteDatabase();
         String[] selectArgs = new String[]{String.valueOf(levelReq), String.valueOf(size)};
         Cursor cursor = database.rawQuery("SELECT * FROM scores WHERE level = ? ORDER BY score DESC LIMIT ?", selectArgs);
@@ -81,8 +80,8 @@ public class ScoreAPI {
                 try {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
                     Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
-                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
-                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(SCORE_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(LEVEL_COL));
                     scores.add(new Score(id, date, score, level));
                 } catch (IllegalArgumentException | ParseException ignored) {
                 }
@@ -98,14 +97,14 @@ public class ScoreAPI {
         if (idReq >= 0) {
             SQLiteDatabase database = getSqLiteDatabase();
             String[] selectArgs = new String[]{String.valueOf(idReq)};
-            Cursor cursor = database.rawQuery("SELECT * FROM scores WHERE id=?", selectArgs);
+            Cursor cursor = database.rawQuery("SELECT * FROM scores WHERE id = ?", selectArgs);
             Score scoreObj = null;
             if (cursor.moveToFirst()) {
                 try {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
                     Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
-                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
-                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(SCORE_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(LEVEL_COL));
                     scoreObj = new Score(id, date, score, level);
                 } catch (IllegalArgumentException | ParseException ignored) {
                 }
@@ -124,10 +123,10 @@ public class ScoreAPI {
             SQLiteDatabase database = getSqLiteDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(DATE_COL, databaseDateFormat.format(date));
-            contentValues.put(PUNTUACION_COL, score);
-            contentValues.put(DIFICULTAD_COL, level);
+            contentValues.put(SCORE_COL, score);
+            contentValues.put(LEVEL_COL, level);
             String[] updateArgs = new String[]{String.valueOf(id)};
-            int updatedRows = database.update("scores", contentValues, "id=?", updateArgs);
+            int updatedRows = database.update("scores", contentValues, "id = ?", updateArgs);
             database.close();
 
             if (updatedRows == 1) {
@@ -143,7 +142,7 @@ public class ScoreAPI {
     public void removeScore(int id) {
         SQLiteDatabase database = getSqLiteDatabase();
         String[] removeArgs = new String[]{String.valueOf(id)};
-        database.delete("scores", "id=?", removeArgs);
+        database.delete("scores", "id = ?", removeArgs);
         database.close();
     }
 

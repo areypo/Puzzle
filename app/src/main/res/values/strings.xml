@@ -8,4 +8,8 @@
     <string name="back">Back</string>
     <string name="top_score">Top Score</string>
     <string name="empty_list">No records</string>
+    <string name="selec_img">Select Image</string>
+    <string name="selected_img_description">Selected Image</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
 </resources>

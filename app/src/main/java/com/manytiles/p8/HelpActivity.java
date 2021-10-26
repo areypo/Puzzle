@@ -1,5 +1,8 @@
 package com.manytiles.p8;
 
+import android.content.Intent;
+import android.net.MailTo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Xml;
 import android.view.View;
@@ -20,7 +23,24 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
 
         WebView helpWebView = findViewById(R.id.help_webview);
-        helpWebView.setWebViewClient(new WebViewClient());
+
+        helpWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("mailto:")) {
+                    MailTo mailTo = MailTo.parse(url);
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{ mailTo.getTo() });
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    startActivity(shareIntent);
+                }
+
+                return true;
+            }
+        });
+
         helpWebView.loadDataWithBaseURL("file:///android_asset/", readAssetFileAsString(), "text/html", Xml.Encoding.UTF_8.name(), null);
     }
 

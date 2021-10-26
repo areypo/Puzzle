@@ -6,4 +6,6 @@
     <string name="help">Help</string>
     <string name="splash_img_description">Splash Image with Logo</string>
     <string name="back">Back</string>
+    <string name="top_score">Top Score</string>
+    <string name="empty_list">No records</string>
 </resources>

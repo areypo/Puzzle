@@ -34,7 +34,6 @@ public class HelpActivity extends AppCompatActivity {
         try {
             inputStream = getAssets().open("help.html");
             int size = inputStream.available();
-            System.out.println("SIZE: " + size);
 
             byte[] buffer = new byte[size];
             result += inputStream.read(buffer);

@@ -6,4 +6,6 @@
     <string name="help">Ayuda</string>
     <string name="splash_img_description">Imagen Splash con el logo</string>
     <string name="back">Atrás</string>
+    <string name="top_score">Puntuaciones Máximas</string>
+    <string name="empty_list">Sin información</string>
 </resources>

@@ -5,8 +5,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.manytiles.p8.scoreManager.Score;
+import com.manytiles.p8.scoreManager.ScoreAPI;
+import com.manytiles.p8.scoreManager.ScoreAdapter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +22,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ArrayList<Score> topScores = ScoreAPI.getAllScores(this);
+
+        if (topScores.size() > 0) {
+            ListView topScoreList = findViewById(R.id.top_score_list);
+            topScoreList.setVisibility(View.VISIBLE);
+            ScoreAdapter topScoreAdapter = new ScoreAdapter(this, topScores);
+            topScoreList.setAdapter(topScoreAdapter);
+        } else {
+            TextView emptyScoreList = findViewById(R.id.empty_score_list);
+            emptyScoreList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        System.exit(0);
     }
 
     // Creates Action Menu

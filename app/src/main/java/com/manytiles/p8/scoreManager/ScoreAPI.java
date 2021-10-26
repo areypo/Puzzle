@@ -9,47 +9,59 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ScoreAPI {
 
+    private final static String TABLE_NAME = "scores";
+    private final static String ID_COL = "id";
+    private final static String DATE_COL = "date";
+    private final static String PUNTUACION_COL = "score";
+    private final static String DIFICULTAD_COL = "level";
+
+    private AdminSQLiteOpenHelper adminSQLiteOpenHelper;
+
     private static SimpleDateFormat databaseDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault());
 
-    private static SQLiteDatabase getSqLiteDatabase(Context context) {
-        AdminSQLiteOpenHelper adminSQLiteOpenHelper = new AdminSQLiteOpenHelper(context, "puzzle", null, 1);
+    public ScoreAPI(Context context) {
+        this.adminSQLiteOpenHelper = new AdminSQLiteOpenHelper(context, "puzzle", null, 1);
+    }
 
+    private SQLiteDatabase getSqLiteDatabase() {
         return adminSQLiteOpenHelper.getWritableDatabase();
     }
 
-    public static Score addScore(Context context, int time) {
-        if (time >= 0) {
-            SQLiteDatabase database = getSqLiteDatabase(context);
+    public Score addScore(long score, int level) {
+        if (score >= 0 && level > 0) {
+            SQLiteDatabase database = getSqLiteDatabase();
             ContentValues contentValues = new ContentValues();
             Date now = new Date();
-            contentValues.put("date", databaseDateFormat.format(now));
-            contentValues.put("time", time);
+            contentValues.put(DATE_COL, databaseDateFormat.format(now));
+            contentValues.put(PUNTUACION_COL, score);
+            contentValues.put(DIFICULTAD_COL, level);
             long id = database.insert("scores", null, contentValues);
             database.close();
 
-            return new Score((int) id, now, time);
+            return new Score(id, now, score, level);
         } else {
             return null;
         }
     }
 
-    public static ArrayList<Score> getAllScores(Context context) {
-        SQLiteDatabase database = getSqLiteDatabase(context);
-        Cursor cursor = database.rawQuery("SELECT rowid, date, time FROM scores ORDER BY time DESC", null);
+    public ArrayList<Score> getAllScores() {
+        SQLiteDatabase database = getSqLiteDatabase();
+        Cursor cursor = database.rawQuery("SELECT * FROM scores ORDER BY time DESC", null);
         ArrayList<Score> scores = new ArrayList<>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                int id = cursor.getInt(0);
-                int time = cursor.getInt(2);
                 try {
-                    Date date = databaseDateFormat.parse(cursor.getString(1));
-                    scores.add(new Score(id, date, time));
-                } catch (ParseException parseException) {
-                    scores.add(new Score(id, null, time));
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
+                    Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    scores.add(new Score(id, date, score, level));
+                } catch (IllegalArgumentException | ParseException ignored) {
                 }
                 cursor.moveToNext();
             }
@@ -59,40 +71,67 @@ public class ScoreAPI {
         return scores;
     }
 
-    public static Score getScore(Context context, int id) {
-        if (id >= 0) {
-            SQLiteDatabase database = getSqLiteDatabase(context);
-            Cursor cursor = database.rawQuery("SELECT rowid, date, time FROM scores WHERE rowid=" + id, null);
-            Score score = null;
-            if (cursor.moveToFirst()) {
-                Integer idDb = cursor.getInt(0);
-                Integer time = cursor.getInt(2);
+    public List<Score> getBetterScores(int levelReq, int size) {
+        SQLiteDatabase database = getSqLiteDatabase();
+        String[] selectArgs = new String[]{String.valueOf(levelReq), String.valueOf(size)};
+        Cursor cursor = database.rawQuery("SELECT * FROM scores WHERE level = ? ORDER BY score DESC LIMIT ?", selectArgs);
+        ArrayList<Score> scores = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
                 try {
-                    Date date = databaseDateFormat.parse(cursor.getString(1));
-                    score = new Score(idDb, date, time);
-                } catch (ParseException parseException) {
-                    score = new Score(id, null, time);
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
+                    Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    scores.add(new Score(id, date, score, level));
+                } catch (IllegalArgumentException | ParseException ignored) {
                 }
+                cursor.moveToNext();
+            }
+        }
+        database.close();
+
+        return scores;
+    }
+
+    public Score getScore(int idReq) {
+        if (idReq >= 0) {
+            SQLiteDatabase database = getSqLiteDatabase();
+            String[] selectArgs = new String[]{String.valueOf(idReq)};
+            Cursor cursor = database.rawQuery("SELECT * FROM scores WHERE id=?", selectArgs);
+            Score scoreObj = null;
+            if (cursor.moveToFirst()) {
+                try {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL));
+                    Date date = databaseDateFormat.parse(cursor.getString(cursor.getColumnIndexOrThrow(DATE_COL)));
+                    long score = cursor.getLong(cursor.getColumnIndexOrThrow(PUNTUACION_COL));
+                    int level = cursor.getInt(cursor.getColumnIndexOrThrow(DIFICULTAD_COL));
+                    scoreObj = new Score(id, date, score, level);
+                } catch (IllegalArgumentException | ParseException ignored) {
+                }
+                cursor.moveToNext();
             }
             database.close();
 
-            return score;
+            return scoreObj;
         } else {
             return null;
         }
     }
 
-    public static Score updateScore(Context context, int id, Date date, int time) {
-        if (id > 0 && date != null && time >= 0) {
-            SQLiteDatabase database = getSqLiteDatabase(context);
+    public Score updateScore(int id, Date date, long score, int level) {
+        if (id > 0 && date != null && score >= 0 && level > 0) {
+            SQLiteDatabase database = getSqLiteDatabase();
             ContentValues contentValues = new ContentValues();
-            contentValues.put("date", databaseDateFormat.format(date));
-            contentValues.put("time", time);
-            int updatedRows = database.update("scores", contentValues, "rowid=" + id, null);
+            contentValues.put(DATE_COL, databaseDateFormat.format(date));
+            contentValues.put(PUNTUACION_COL, score);
+            contentValues.put(DIFICULTAD_COL, level);
+            String[] updateArgs = new String[]{String.valueOf(id)};
+            int updatedRows = database.update("scores", contentValues, "id=?", updateArgs);
             database.close();
 
             if (updatedRows == 1) {
-                return new Score(id, date, time);
+                return new Score(id, date, score, level);
             } else {
                 return null;
             }
@@ -101,22 +140,23 @@ public class ScoreAPI {
         }
     }
 
-    public static void removeScore(Context context, int id) {
-        SQLiteDatabase database = getSqLiteDatabase(context);
-        database.delete("scores", "rowid =" + id, null);
+    public void removeScore(int id) {
+        SQLiteDatabase database = getSqLiteDatabase();
+        String[] removeArgs = new String[]{String.valueOf(id)};
+        database.delete("scores", "id=?", removeArgs);
         database.close();
     }
 
-    public static void purgeScore(Context context) {
-        SQLiteDatabase database = getSqLiteDatabase(context);
+    public void purgeScore() {
+        SQLiteDatabase database = getSqLiteDatabase();
         database.delete("scores", null, null);
         database.close();
     }
 
-    public static void printScore(Context context) {
-        ArrayList<Score> ALL_SCORES = ScoreAPI.getAllScores(context);
-        System.out.println("SCORE SIZE: " + ALL_SCORES.size());
-        for (Score score : ALL_SCORES) {
+    public void printScore() {
+        ArrayList<Score> allScores = this.getAllScores();
+        System.out.println("SCORE SIZE: " + allScores.size());
+        for (Score score : allScores) {
             System.out.println(score.toString());
         }
     }

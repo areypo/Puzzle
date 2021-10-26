@@ -5,26 +5,29 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Score {
-    private int id;
+    private long id;
     private Date date;
-    private int score;
+    private long score;
+    private int level;
 
-    public Score(int id, Date date, int score) {
+    public Score(long id, Date date, long score, int level) {
         this.id = id;
         this.date = date;
         this.score = score;
+        this.level = level;
     }
 
-    public Score(Date date, int score) {
+    public Score(Date date, long score, int level) {
         this.date = date;
         this.score = score;
+        this.level = level;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -41,16 +44,24 @@ public class Score {
         this.date = date;
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
+    }
+
+    public void setScore(long score) {
+        this.score = score;
     }
 
     public String getStringScore() {
         return score + "s";
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @Override
@@ -59,6 +70,7 @@ public class Score {
                 "id=" + id +
                 ", date=" + date +
                 ", score=" + score +
+                ", level=" + level +
                 '}';
     }
 }

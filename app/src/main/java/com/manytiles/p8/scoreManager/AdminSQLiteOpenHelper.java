@@ -13,11 +13,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE scores(date DATETIME, time INT)");
+        db.execSQL("CREATE TABLE scores(id INTEGER PRIMARY KEY AUTOINCREMENT, date DATETIME, score NUMBER, level INTEGER)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS scores");
+        this.onCreate(db);
     }
 }
